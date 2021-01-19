@@ -23,7 +23,8 @@ class particle:
 	def collide(self, body, E):
 		dx, dy = self.x - body.x, self.y - body.y
 		d = math.sqrt(dx**2 + dy**2)
-
+		
+		# Has collided
 		if d < self.r + body.r:
 			dvx, dvy = self.xv - body.xv, self.yv - body.yv
 			sin, cos = dx/d, dy/d 
@@ -113,7 +114,6 @@ class _container(obstacle):
 		elif p.x - p.r < self.x0:
 			p.x += p.r - p.x + self.x0
 			p.xv = -p.xv * E
-
 
 class pool:
 
