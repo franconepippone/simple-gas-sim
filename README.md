@@ -5,7 +5,7 @@ Simple particle gas simulation made with python and pygame.
 ## Features:
 ##### _class_ particles.particle(_pos, vel, r_)
   - Returns a particle object that can be added to a pool. 'pos' and 'vel' are both tuples
-##### _class_ particles.barrier(_paxys, x, y, l, tag=None_)
+##### _class_ particles.barrier(_axys, x, y, l, tag=None_)
   - Returns a barrier object that can be added to a pool. 'axys' defines barrier orientation (1: Horizontal; 0: Vertical), 'l' defines lenght
   - A tag might be added to target the barrier once added to a pool.
 
