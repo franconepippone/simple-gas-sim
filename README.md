@@ -22,7 +22,7 @@ Simple particle gas simulation made with python and pygame.
 ##### pool.update()
   - Advances simulation of one timestep
 ##### pool.merge(_pool2_)
-  - Add particles and obstacles of pool2 with pool
+  - Adds particles and obstacles of pool2 to pool
 
 ##### particles.mergepools(*pools, e=False, g=False)
   - Merges contents of *pools and returns a new pool object. Pool new settings will be copied from the first pool in *pools, unless specified on function call
