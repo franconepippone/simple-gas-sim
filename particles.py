@@ -1,6 +1,6 @@
 import math
 from random import randint, uniform
-import numpy
+from numpy import sign
 
 
 class particle:
@@ -84,12 +84,12 @@ class barrier(obstacle):
 		if self.axys == 1:
 			intersect = abs(p.y - self.y) - p.r
 			if self.x0 < p.x < self.x1 and intersect < 0:
-				p.y += intersect * numpy.sign(p.yv)
+				p.y += intersect * sign(p.yv)
 				p.yv = - p.yv * E * self.e
 		else:
 			intersect = abs(p.x - self.x) - p.r
 			if self.y0 < p.y < self.y1 and intersect < 0:
-				p.x += intersect * numpy.sign(p.xv)
+				p.x += intersect * sign(p.xv)
 				p.xv = - p.xv * E * self.e
 
 class _container(obstacle):
