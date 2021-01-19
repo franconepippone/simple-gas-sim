@@ -114,6 +114,7 @@ class _container(obstacle):
 			p.x += p.r - p.x + self.x0
 			p.xv = -p.xv * E
 
+
 class box(obstacle):
 	def __init__(self, rect, tag = None):
 		self.rect = rect
@@ -210,9 +211,12 @@ class pool:
 	def removeob(self, tag):
 		self.obstacles = [item for item in self.obstacles if item.tag != tag]
 
-	def random(self, n, v, r, rect):
+	def random(self, n, v, r, rect = None):
+		if rect is None:
+			rect = self.cont.rect
+			print(rect)
 		for _ in range(n):
-			p = particle((randint(rect[0][0], rect[1][0]), randint(rect[0][1], rect[1][1])), (uniform(-v, v), uniform(-v, v)), r)
+			p = particle((randint(rect[0][0], rect[1][0]), randint(rect[1][1], rect[0][1])), (uniform(-v, v), uniform(-v, v)), r)
 			self.add(p)
 
 
