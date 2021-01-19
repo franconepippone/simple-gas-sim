@@ -1,4 +1,4 @@
-# Simple-gas-sim
+# Simple gas simulation
 
 Simple particle gas simulation made with python and pygame.  
 
