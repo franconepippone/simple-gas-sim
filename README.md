@@ -28,6 +28,7 @@ Simple particle gas simulation made with python and pygame.
   - Merges contents of *pools and returns a new pool object. The new pool settings will default to the ones of the first pool entered
   
 ## Rendering:
+More rendering/screen configurations are found in the renderer.py module
 ##### renderer.update()
   - Refreshes screen
 ##### renderer.drawpool(_pool_)
