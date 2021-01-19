@@ -31,8 +31,6 @@ def drawpool(pool):
 				pygame.draw.line(schermo, b.color, (int(b.x0) + OFFW, -int(b.y) + OFFH), (int(b.x1) + OFFW, -int(b.y) + OFFH), 4)
 			elif b.axys == 0:
 				pygame.draw.line(schermo, b.color, (int(b.x) + OFFW, -int(b.y0) + OFFH), (int(b.x) + OFFW, -int(b.y1) + OFFH), 4)
-		elif type(b) == prt.box:
-			pygame.draw.rect(schermo, b.color, offsetrect(b, OFFW, OFFH), 2)
 
 	pygame.draw.rect(schermo, pool.cont.color, offsetrect(pool.cont, OFFW, OFFH), 2)
 
