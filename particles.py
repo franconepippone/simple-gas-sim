@@ -115,54 +115,6 @@ class _container(obstacle):
 			p.xv = -p.xv * E
 
 
-class box(obstacle):
-	def __init__(self, rect, tag = None):
-		self.rect = rect
-		self.x0 = rect[0][0]
-		self.y0 = rect[0][1]
-		self.x1 = rect[1][0]
-		self.y1 = rect[1][1]
-		self.tag = tag
-
-	def collide(self, p, E):
-		if self.x0 <= p.x <= self.x1 and self.y1 <= p.y <= self.y0:
-			if self.y1 <= p.y <= self.y0:
-				if p.yv > 0:
-					pass
-				p.yv = -p.yv * E
-			if self.x0 <= p.x <= self.x1:
-				pass
-
-class piston(obstacle):
-	def __init__(self, axys, x, y, l, tag = None):
-		self.tag = tag
-		self.v = 0
-		if axys == 1 or axys == 'x':
-			self.axys = 1
-			self.y = y
-			self.x0 = x - l/2
-			self.x1 = x + l/2
-		elif axys == 0 or axys == 'y':
-			self.axys = 0
-			self.x = x
-			self.y0 = y - l/2
-			self.y1 = y + l/2
-		else:
-			print("invalid axys")
-
-	def collide(self, p, E):
-		if self.axys == 1:
-			intersect = abs(p.y - self.y) - p.r
-			if self.x0 < p.x < self.x1 and intersect < 0:
-				p.y += intersect * numpy.sign(p.yv)
-				p.yv = - p.yv * E * self.e
-				self.v
-		else:
-			intersect = abs(p.x - self.x) - p.r
-			if self.y0 < p.y < self.y1 and intersect < 0:
-				p.x += intersect * numpy.sign(p.xv)
-				p.xv = - p.xv * E * self.e
-
 class pool:
 
 	def __init__(self, e = 1, g = 0, *particles):
