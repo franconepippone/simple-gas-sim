@@ -21,7 +21,7 @@ def update(background = WHITE):
 	pygame.display.update()
 	schermo.fill(background)
 
-def drawscene(pool):
+def drawpool(pool):
 	for p in pool.particles:
 		pygame.draw.circle(schermo, p.color, (int(p.x) + OFFW, -int(p.y) + OFFH), int(p.r))
 

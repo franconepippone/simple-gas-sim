@@ -210,9 +210,9 @@ class pool:
 	def removeob(self, tag):
 		self.obstacles = [item for item in self.obstacles if item.tag != tag]
 
-	def random(self, n, s, r, rect):
+	def random(self, n, v, r, rect):
 		for _ in range(n):
-			p = particle((randint(rect[0][0], rect[1][0]), randint(rect[0][1], rect[1][1])), (uniform(-s, s), uniform(-s, s)), r)
+			p = particle((randint(rect[0][0], rect[1][0]), randint(rect[0][1], rect[1][1])), (uniform(-v, v), uniform(-v, v)), r)
 			self.add(p)
 
 

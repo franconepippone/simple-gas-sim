@@ -2,7 +2,7 @@ import renderer as gui
 import particles as prt
 import pygame
 
-#pool.setdomain(((-800,400), (800,-400)))
+
 
 pool = prt.pool(e = .96, g = 0.01)
 pool.setdomain(((400, 200), (800, -200)))
@@ -38,6 +38,6 @@ while True:
 	for p in pools:
 		p.update()
 		print("pool temp: ", p.getmediantemp())
-		gui.drawscene(p)
+		gui.drawpool(p)
 
 	gui.update()
