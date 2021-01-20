@@ -24,7 +24,7 @@ Simple particle gas simulation made with python and pygame.
 ##### pool.merge(_pool2_)
   - Adds particles and obstacles of pool2 to pool
 
-##### particles.mergepools(*pools, e=False, g=False)
+##### particles.mergepools(_*pools, e=False, g=False_)
   - Merges contents of *pools and returns a new pool object. The new pool settings will default to the ones of the first pool entered
   
 ## Rendering:
