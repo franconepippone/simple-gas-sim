@@ -180,7 +180,7 @@ class _container(obstacle):
 			p.x += p.r - p.x + self.x0
 			p.xv = -p.xv * E
 
-
+## UNFINISHED, DO NOT USE
 class box(obstacle):
 	def __init__(self, rect, tag = None):
 		self.rect = rect
@@ -201,7 +201,7 @@ class box(obstacle):
 
 class piston(obstacle):
 	updatable = True
-	def __init__(self, axys, x, y, l, m, tag = None):
+	def __init__(self, axys = 1, x, y, l, m, tag = None):
 		self.tag = tag
 		self.v = 0
 		self.m = m
@@ -246,6 +246,7 @@ class piston(obstacle):
 				p.yv += (dv * self.m) / (1 + self.m)
 
 		else:
+			# DOES NOT SUPPORT VERTICAL COLLISIONS
 			intersect = abs(p.x - self.x) - p.r
 			if self.y0 < p.y < self.y1 and intersect < 0:
 				p.x += intersect * sign(p.xv)
