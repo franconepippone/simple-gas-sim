@@ -2,7 +2,7 @@
 
 ## New features:
 ##### _class_ particles.grabparticle(_mouse, r_)
-  - Returns a particle object that can be added to a pool. 'mouse' is a reference to a dictionary containing mouse coordinates, 'r' is radius
+  - Returns a grabbable particle object that can be added to a pool. 'mouse' is a reference to a dictionary containing mouse coordinates, 'r' is radius
 ##### _class_ particles.heatplate(_axys, widget, x, y, l, tag=None_)
   - Same as barrier, takes a widget object (slider) for updating
 ##### _class_ particles.piston(_axys, x, y, l, m, tag = None_)
