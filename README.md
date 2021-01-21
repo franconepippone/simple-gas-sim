@@ -1,4 +1,4 @@
-# WIP (just messing around)
+# WIP features
 [Demo](https://youtu.be/VE2tG6n60uM)
 ## New features:
 ##### _class_ particles.grabparticle(_mouse, r_)
