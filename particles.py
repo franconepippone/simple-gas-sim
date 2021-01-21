@@ -201,7 +201,7 @@ class box(obstacle):
 
 class piston(obstacle):
 	updatable = True
-	def __init__(self, axys = 1, x, y, l, m, tag = None):
+	def __init__(self, x, y, l, m, tag = None, axys = 1):
 		self.tag = tag
 		self.v = 0
 		self.m = m
