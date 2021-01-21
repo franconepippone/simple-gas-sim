@@ -19,7 +19,7 @@ pool.add(draggable)
 pool.random(60, 1, 15)
 pool2.random(60, 20, 15)
 
-
+# Needed for draggable particle
 def store_mouse(pos):
 	mouse_pos['x'] = pos[0]
 	mouse_pos['y'] = pos[1]
