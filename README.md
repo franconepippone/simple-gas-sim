@@ -1,6 +1,6 @@
 # Simple gas simulation
 
-Simple particle gas simulation made with python and pygame. Check out this [demo](https://youtu.be/VE2tG6n60uM) video.
+Simple particle gas simulation made with python and pygame. Check out this [demo](https://youtu.be/VE2tG6n60uM) video (Also includes v2 wip features)
 
 ## Features:
 ##### _class_ particles.particle(_pos, vel, r_)
