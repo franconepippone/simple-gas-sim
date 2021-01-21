@@ -12,6 +12,7 @@ class particle:
 		self.r = r
 		self.color = (255,0,0)
 		self.container = None
+		self.m = 1
 
 	def update(self, G):
 		self.yv -= G
@@ -23,8 +24,7 @@ class particle:
 	def collide(self, body, E):
 		dx, dy = self.x - body.x, self.y - body.y
 		d = math.sqrt(dx**2 + dy**2)
-		
-		# Has collided
+
 		if d < self.r + body.r:
 			dvx, dvy = self.xv - body.xv, self.yv - body.yv
 			sin, cos = dx/d, dy/d 
@@ -44,6 +44,19 @@ class particle:
 			body.xv -= new_dvx
 			body.yv -= new_dvy
 
+class grabparticle(particle):
+	def __init__(self, mouse, r):
+		super(grabparticle, self).__init__((0,0), (0,0), r)
+		self.mouse = mouse
+		self.color = (100,100,255)
+		self.speed = 1
+
+	def update(self, G):
+		self.xv = self.mouse['x'] - self.x
+		self.yv = -self.mouse['y'] - self.y
+		self.x += self.xv
+		self.y += self.yv
+
 def clamp(n, min, max):
 	if min < n < max:
 		return n
@@ -60,10 +73,39 @@ def getcolor(speed):
 
 class obstacle:
 	color = (0,0,0)
+	updatable = False
 	e = 1
 	tag = None
 	def collide(self, p, E):
 		pass
+
+class slider:
+	def __init__(self, x, y, range, lenght, size):
+		self.x0 = x - lenght / 2
+		self.x1 = x + lenght / 2
+		self.y = y
+		self.x = self.x0
+		self.value = 0
+		self.start = range[0]
+		self.end = range[1]
+		self.range = range[1] - range[0]
+		self.size = size
+		self.color = (150,150,150)
+
+	def update(self, mouse_pos, clicking):
+		mx, my = mouse_pos
+		# if colliding with mouse
+		if self.x - self.size <= mx <= self.x + self.size and self.y - self.size <= my <= self.y + self.size:
+			self.color = (200,200,200)
+			if clicking:
+				self.x = mx
+				if self.x > self.x1:
+					self.x = self.x1
+				elif self.x < self.start + self.x0:
+					self.x = self.start + self.x0
+			self.value = (self.x - self.x0) / self.range
+		else:
+			self.color = (100,100,100)
 
 class barrier(obstacle):
 	def __init__(self, axys, x, y, l, tag = None):
@@ -71,15 +113,25 @@ class barrier(obstacle):
 		if axys == 1 or axys == 'x':
 			self.axys = 1
 			self.y = y
+			self.x_ = x
 			self.x0 = x - l/2
 			self.x1 = x + l/2
 		elif axys == 0 or axys == 'y':
 			self.axys = 0
 			self.x = x
+			self.y_ = y
 			self.y0 = y - l/2
 			self.y1 = y + l/2
 		else:
 			print("invalid axys")
+
+	def changelen(self, l):
+		if self.axys == 1:
+			self.x0 = self.x_ - l/2
+			self.x1 = self.x_ + l/2
+		else:
+			self.y0 = self.y_ - l/2
+			self.y1 = self.y_ + l/2
 
 	def collide(self, p, E):
 		if self.axys == 1:
@@ -92,6 +144,19 @@ class barrier(obstacle):
 			if self.y0 < p.y < self.y1 and intersect < 0:
 				p.x += intersect * sign(p.xv)
 				p.xv = - p.xv * E * self.e
+
+class heatplate(barrier):
+	updatable = True
+	def __init__(self, widget, axys, x, y, l, tag = None):
+		super(heatplate, self).__init__(axys, x, y, l, tag)
+		self.widget = widget
+		self.e = 1
+		self.color = (0,0,0)
+
+	def update(self, _):
+		print("calling")
+		self.e = self.widget.value * 2
+		self.color = getcolor(self.e * 3.75)
 
 class _container(obstacle):
 	def __init__(self, rect):
@@ -115,30 +180,106 @@ class _container(obstacle):
 			p.x += p.r - p.x + self.x0
 			p.xv = -p.xv * E
 
+
+class box(obstacle):
+	def __init__(self, rect, tag = None):
+		self.rect = rect
+		self.x0 = rect[0][0]
+		self.y0 = rect[0][1]
+		self.x1 = rect[1][0]
+		self.y1 = rect[1][1]
+		self.tag = tag
+
+	def collide(self, p, E):
+		if self.x0 <= p.x <= self.x1 and self.y1 <= p.y <= self.y0:
+			if self.y1 <= p.y <= self.y0:
+				if p.yv > 0:
+					pass
+				p.yv = -p.yv * E
+			if self.x0 <= p.x <= self.x1:
+				pass
+
+class piston(obstacle):
+	updatable = True
+	def __init__(self, axys, x, y, l, m, tag = None):
+		self.tag = tag
+		self.v = 0
+		self.m = m
+		if axys == 1 or axys == 'x':
+			self.axys = 1
+			self.y = y
+			self.x_ = x
+			self.x0 = x - l/2
+			self.x1 = x + l/2
+		elif axys == 0 or axys == 'y':
+			self.axys = 0
+			self.x = x
+			self.y_ = y
+			self.y0 = y - l/2
+			self.y1 = y + l/2
+		else:
+			print("invalid axys")
+
+	def update(self, g):
+		if self.axys == 1:
+			self.v -= g
+			self.y += self.v
+		else:
+			self.y += self.v
+
+	def changelen(self, l):
+		if self.axys == 1:
+			self.x0 = self.x_ - l/2
+			self.x1 = self.x_ + l/2
+		else:
+			self.y0 = self.y_ - l/2
+			self.y1 = self.y_ + l/2
+
+	def collide(self, p, E):
+		if self.axys == 1:
+			intersect = abs(p.y - self.y) - p.r
+			if self.x0 < p.x < self.x1 and intersect < 0:
+				p.y += intersect
+				#self.y -= intersect / 2
+				dv = (self.v - p.yv) *2 
+				self.v -= dv / (1 + self.m)
+				p.yv += (dv * self.m) / (1 + self.m)
+
+		else:
+			intersect = abs(p.x - self.x) - p.r
+			if self.y0 < p.y < self.y1 and intersect < 0:
+				p.x += intersect * sign(p.xv)
+				p.xv = - p.xv * E * self.e
+
 class pool:
 
 	def __init__(self, e = 1, g = 0, *particles):
 		self.particles = []
 		self.obstacles = []
+		self.updatables = []
 		self.cont = _container(((-10000,10000), (10000,-10000)))
 		self.e, self.g = e, g
 		for p in particles:
 			self.add(p)
 
 	def add(self, body):
-		if issubclass(type(body), obstacle):
+		if issubclass(type(body), obstacle) or type(body) == heatplate:
 			self.obstacles.append(body)
-		elif type(body) == particle:
+			if body.updatable == True:
+				self.updatables.append(body)
+		elif issubclass(type(body), particle):
 			self.particles.append(body)
+			self.updatables.append(body)
 
 	def merge(self, pool2):
 		self.particles += pool2.particles
 		self.obstacles += pool2.obstacles
+		self.updatables += pool2.updatables
 
 	def update(self):
 		e = self.e *.5 + .5
-		for p in self.particles:
-			p.update(self.g)
+		for body in self.updatables:
+			body.update(self.g)
 		for i, p in enumerate(self.particles):
 			for p2 in self.particles[i+1:]:
 				p.collide(p2, e)
@@ -162,6 +303,7 @@ class pool:
 
 	def removeob(self, tag):
 		self.obstacles = [item for item in self.obstacles if item.tag != tag]
+		self.updatables = [item for item in self.updatables if item.tag != tag]
 
 	def random(self, n, v, r, rect = None):
 		if rect is None:
@@ -181,4 +323,5 @@ def mergepools(*pools, e = False, g = False):
 	for p in pools:
 		newpool.particles += p.particles
 		newpool.obstacles += p.obstacles
+		newpool.updatables += p.updatables
 	return newpool
