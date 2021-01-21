@@ -1,5 +1,5 @@
-## WIP (just messing around)
-
+# WIP (just messing around)
+[Demo](https://youtu.be/VE2tG6n60uM)
 ## New features:
 ##### _class_ particles.grabparticle(_mouse, r_)
   - Returns a grabbable particle object that can be added to a pool. 'mouse' is a reference to a dictionary containing mouse coordinates, 'r' is radius
